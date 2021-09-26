@@ -36,7 +36,7 @@ class PessoaResource(pessoaService: PessoaService) {
     @Produces(MediaType.APPLICATION_JSON)
     fun update(body: PessoaRequest): PessoaResponse {
         if (body.id == null) {
-            throw Exception("teste")
+            throw Exception("Id não informado")
         }
 
         var pessoa = pessoaService.findById(body.id)
@@ -46,6 +46,21 @@ class PessoaResource(pessoaService: PessoaService) {
             cpf = body.cpf
             endereco = body.endereco
         })
+
+        return PessoaResponse(
+            id = pessoa.id,
+            nome = pessoa.nome,
+            cpf = pessoa.cpf,
+            endereco = pessoa.endereco
+        )
+    }
+
+    @GET
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    fun findById(@PathParam("id") id: Long): PessoaResponse {
+        var pessoa = pessoaService.findById(id)
 
         return PessoaResponse(
             id = pessoa.id,
